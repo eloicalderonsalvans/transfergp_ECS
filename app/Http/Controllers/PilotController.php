@@ -73,7 +73,25 @@ class PilotController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'Nom' => 'required|string|max:255',
+            'Cognom' => 'required|string|max:255',
+            'Nacionalitat' => 'required|string|max:255',
+            'Data_neixament' => 'nullable|date',
+            'Numero' => 'required|integer',
+            'Foto_url' => 'nullable|url',
+            'Mundials_guanyats' => 'nullable|integer',
+            'ID_Equip' => 'required|exists:equips,id',
+            'Estat_actiu' => 'required|in:0,1',
+        ]);
+
+        $pilot = Pilot::findOrFail($id);
+        $data = $request->all();
+        $data['Estat_actiu'] = $request->input('Estat_actiu');
+
+        $pilot->update($data);
+
+        return redirect()->route('pilot.index')->with('success', 'Pilot actualitzat correctament.');
     }
 
     /**
