@@ -99,6 +99,9 @@ class PilotController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pilot = Pilot::findOrFail($id);
+        $pilot->delete();
+
+        return redirect()->route('pilot.index')->with('success', 'Pilot eliminat correctament.');
     }
 }
